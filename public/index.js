@@ -27,7 +27,7 @@ function initBotConversation() {
         domain: domain
     });
     const styleOptions = {
-        botAvatarImage: 'https://docs.microsoft.com/en-us/azure/bot-service/v4sdk/media/logo_bot.svg?view=azure-bot-service-4.0',
+        botAvatarImage: 'https://www.bing.com/images/search?view=detailV2&ccid=4lr0hSRw&id=9A45F0FC2197776972C95FFE90E862CDC0F4EEAA&thid=OIP.4lr0hSRwZRNrjOv8gWSAiwHaHa&mediaurl=https%3a%2f%2fimage.flaticon.com%2ficons%2fsvg%2f188%2f188565.svg&exph=504&expw=504&q=robot+svg&simid=607992851271126099&selectedIndex=25&qpvt=robot+svg',
         //botAvatarInitials: 'SWL',
         // userAvatarImage: '',
         userAvatarInitials: 'You'
