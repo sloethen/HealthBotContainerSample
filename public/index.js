@@ -27,8 +27,8 @@ function initBotConversation() {
         domain: domain
     });
     const styleOptions = {
-        // botAvatarImage: 'https://docs.microsoft.com/en-us/azure/bot-service/v4sdk/media/logo_bot.svg?view=azure-bot-service-4.0',
-        botAvatarInitials: 'SWL',
+        botAvatarImage: 'https://docs.microsoft.com/en-us/azure/bot-service/v4sdk/media/logo_bot.svg?view=azure-bot-service-4.0',
+        //botAvatarInitials: 'SWL',
         // userAvatarImage: '',
         userAvatarInitials: 'You'
     };
@@ -61,8 +61,10 @@ function initBotConversation() {
                                     type: "invoke",
                                     name: "TriggerScenario",
                                     value: {
-                                        trigger: "covid19_assessment",
-                                        args: {}
+                                        trigger: "covid19_metrics",
+                                        args: {
+                                            intent:"total_metrics"
+                                        }
                                     }
                                 }
                             }
