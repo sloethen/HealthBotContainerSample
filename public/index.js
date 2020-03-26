@@ -1,4 +1,4 @@
-function requestChatBot(loc) {
+function requestChatBot() {
     const params = new URLSearchParams(location.search);
     const oReq = new XMLHttpRequest();
     oReq.addEventListener("load", initBotConversation);
@@ -6,21 +6,11 @@ function requestChatBot(loc) {
     if (params.has('userId')) {
         path += "&userId=" + params.get('userId');
     }
-    if (loc) {
-        path += "&lat=" + loc.lat + "&long=" + loc.long;
+    if (params.has('region')) {
+        path += "&region=" + params.get('region');
     }
     oReq.open("POST", path);
     oReq.send();
-}
-
-function chatRequested() {
-    const params = new URLSearchParams(location.search);
-    if (params.has('shareLocation')) {
-        getUserLocation(requestChatBot);
-    }
-    else {
-        requestChatBot();
-    }
 }
 
 function getUserLocation(callback) {
@@ -100,7 +90,7 @@ function initBotConversation() {
                                     value: {
                                         trigger: "covid19_assessment",
                                         args: {
-                                            location: location
+                                            region: region
                                         }
                                     }
                                 }
