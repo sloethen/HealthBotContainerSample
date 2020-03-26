@@ -13,24 +13,6 @@ function requestChatBot() {
     oReq.send();
 }
 
-function getUserLocation(callback) {
-    navigator.geolocation.getCurrentPosition(
-        function(position) {
-            var latitude  = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            var location = {
-                lat: latitude,
-                long: longitude
-            }
-            callback(location);
-        },
-        function(error) {
-            // user declined to share location
-            console.log("location error:" + error.message);
-            callback();
-        });
-}
-
 function initBotConversation() {
     if (this.status >= 400) {
         alert(this.statusText);
@@ -51,10 +33,10 @@ function initBotConversation() {
         domain =  "https://" +  tokenPayload.directLineURI + "/v3/directline";
     }
 
-    let location = undefined;
+    let region = undefined;
 
-    if (tokenPayload.location) {
-        location = tokenPayload.location;
+    if (tokenPayload.region) {
+        region = tokenPayload.region;
     }
 
     var botConnection = window.WebChat.createDirectLine({
