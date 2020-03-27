@@ -111,12 +111,13 @@ function initBotConversation() {
                                     value: {
                                         trigger: "covid19_assessment",
                                         args: {
-                                            location: location
+                                            location: location,
                                         }
                                     }
                                 }
                             }
                         });
+                        
                     }
                     return next(action);
                 };
