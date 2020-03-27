@@ -1,6 +1,3 @@
-let params;
-let locale;
-
 function requestChatBot(loc) {
     const params = new URLSearchParams(location.search);
     const oReq = new XMLHttpRequest();
@@ -101,6 +98,8 @@ function initBotConversation() {
             return function(next) {
                 return function(action) {
                     if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+
+                        // Use the following activity to proactively invoke a bot scenario
                         
                         store.dispatch({
                             type: 'DIRECT_LINE/POST_ACTIVITY',
