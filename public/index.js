@@ -88,7 +88,7 @@ function initBotConversation() {
         //botAvatarInitials: 'Bot',
         userAvatarImage: 'https://cdn3.iconfinder.com/data/icons/cardiovascular-1/120/heart_patient-512.png',
         userAvatarBackgroundColor: '#1abc9c',
-        //userAvatarInitials: 'You'
+        //userAvatarInitials: 'You',
         avatarSize: 60,
     };
 
