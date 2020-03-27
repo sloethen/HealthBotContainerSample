@@ -2,12 +2,7 @@ let params;
 let locale;
 
 function requestChatBot(loc) {
-<<<<<<< HEAD
     const params = new URLSearchParams(location.search);
-=======
-    params = BotChat.queryParams(location.search);
-    locale = params['locale'] || 'en_us';
->>>>>>> upstream/master
     const oReq = new XMLHttpRequest();
     oReq.addEventListener("load", initBotConversation);
     var path = "/chatBot?";
