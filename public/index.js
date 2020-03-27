@@ -25,13 +25,8 @@ function requestChatBot(loc) {
 }
 
 function chatRequested() {
-<<<<<<< HEAD
     const params = new URLSearchParams(location.search);
     if (params.has('shareLocation')) {
-=======
-    var shareLocation = params["shareLocation"];
-    if (shareLocation) {
->>>>>>> upstream/master
         getUserLocation(requestChatBot);
     }
     else {
@@ -94,7 +89,6 @@ function initBotConversation() {
         domain: domain,
         webSocket: true
     });
-<<<<<<< HEAD
 
     const styleOptions = {
         botAvatarImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Cartoon_Robot.svg/512px-Cartoon_Robot.svg.png',
@@ -151,48 +145,4 @@ function initBotConversation() {
 function startChat(user, webchatOptions) {
     const botContainer = document.getElementById('webchat');
     window.WebChat.renderWebChat(webchatOptions, botContainer);
-=======
-    startChat(user, botConnection);
-
-    // Use the following activity to enable an authenticated end user experience.
-    /*
-    botConnection.postActivity(
-        {type: "event", value: jsonWebToken, from: user, name: "InitAuthenticatedConversation"
-    }).subscribe(function (id) {});
-    */
-
-    // Use the following activity to proactively invoke a bot scenario. 
-    /*
-    botConnection.postActivity({
-        type: "invoke",
-        value: {
-            trigger: "{scenario}",
-            args: {
-                myVar1: "{custom_arg_1}",
-                myVar2: "{custom_arg_2}"
-            }
-        },
-        from: user,
-        name: "TriggerScenario",
-        locale: locale
-    }).subscribe(function(id) {});
-    */
-
-    botConnection.activity$
-        .filter(function (activity) {return activity.type === "event" && activity.name === "shareLocation"})
-        .subscribe(function (activity) {sendUserLocation(botConnection, user)});
-}
-
-function startChat(user, botConnection) {
-    const botContainer = document.getElementById('botContainer');
-    botContainer.classList.add("wc-display");
-
-    BotChat.App({
-        botConnection: botConnection,
-        user: user,
-        locale: locale,
-        resize: 'detect'
-        // sendTyping: true,    // defaults to false. set to true to send 'typing' activities to bot (and other users) when user is typing
-    }, botContainer);
->>>>>>> upstream/master
 }
