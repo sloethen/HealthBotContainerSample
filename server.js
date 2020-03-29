@@ -1,4 +1,5 @@
-const crypto = require('crypto');
+require('dotenv').config();
+const crypto = require('crypto');
 const express = require("express");
 const path = require("path");
 const jwt = require("jsonwebtoken");
@@ -7,7 +8,7 @@ const cookieParser = require('cookie-parser');
 const WEBCHAT_SECRET = process.env.WEBCHAT_SECRET;
 const DIRECTLINE_ENDPOINT_URI = process.env.DIRECTLINE_ENDPOINT_URI;
 const APP_SECRET = process.env.APP_SECRET;
-const directLineTokenEp = `https://${directLineHost || "directline.botframework.com"}/v3/directline/tokens/generate`;
+const directLineTokenEp = `https://${DIRECTLINE_ENDPOINT_URI || "directline.botframework.com"}/v3/directline/tokens/generate`;
 
 // Initialize the web app instance,
 const app = express();
@@ -73,7 +74,7 @@ app.get('/health', function(req, res){
 app.post('/chatBot',  function(req, res) {
     if (!isUserAuthenticated()) {
         res.status(403).send();
-        return
+        return;
     }
     rp(appConfig.options)
         .then(function (parsedBody) {
@@ -86,6 +87,7 @@ app.post('/chatBot',  function(req, res) {
             var response = {};
             response['userId'] = userid;
             response['userName'] = req.query.userName;
+            response['locale'] = req.query.locale;
             response['connectorToken'] = parsedBody.token;
             if (req.query.lat && req.query.long)  {
                 response['location'] = {lat: req.query.lat, long: req.query.long};
