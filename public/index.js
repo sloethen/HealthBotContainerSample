@@ -108,6 +108,7 @@ function initBotConversation() {
         //userAvatarBackgroundColor: '#1abc9c',
         userAvatarInitials: 'You',
         avatarSize: 40,
+        suggestedActionBackground: 'Red'
     };
 
     const store = window.WebChat.createStore(
