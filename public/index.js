@@ -1,16 +1,36 @@
+const defaultLocale = 'en-US';
+const localeRegExPattern = /^[a-z]{2}(-[A-Z]{2})?$/;
+
 function requestChatBot(loc) {
     const params = new URLSearchParams(location.search);
+    const locale = params.has('locale') ? extractLocale(params.get('locale')) : defaultLocale;
     const oReq = new XMLHttpRequest();
     oReq.addEventListener("load", initBotConversation);
-    var path = "/chatBot?";
-    if (params.has('userId')) {
-        path += "&userId=" + params.get('userId');
-    }
+    var path = "/chatBot?locale=" + locale;
+
     if (loc) {
         path += "&lat=" + loc.lat + "&long=" + loc.long;
     }
+    if (params.has('userId')) {
+        path += "&userId=" + params.get('userId');
+    }
+    if (params.has('userName')) {
+        path += "&userName=" + params.get('userName');
+    }
     oReq.open("POST", path);
     oReq.send();
+}
+
+function extractLocale(localeParam) {
+    if(localeParam === 'autodetect') {
+        return navigator.language;
+    }
+
+    //Before assigning, ensure it's a valid locale string (xx or xx-XX)
+    if(localeParam.search(localeRegExPattern) === 0) {
+        return localeParam;
+    }
+    return defaultLocale;
 }
 
 function chatRequested() {
@@ -52,7 +72,8 @@ function initBotConversation() {
     const tokenPayload = JSON.parse(atob(jsonWebToken.split('.')[1]));
     const user = {
         id: tokenPayload.userId,
-        name: tokenPayload.userName
+        name: tokenPayload.userName,
+        locale: tokenPayload.locale
     };
 
     let domain = undefined;
@@ -67,6 +88,12 @@ function initBotConversation() {
         location = tokenPayload.location;
     }
 
+    let locale = undefined;
+
+    if (tokenPayload.locale) {
+        locale=tokenPayload.locale || 'en-us';
+    }
+
     var botConnection = window.WebChat.createDirectLine({
         token: tokenPayload.connectorToken,
         domain: domain,
@@ -74,13 +101,14 @@ function initBotConversation() {
     });
 
     const styleOptions = {
-        botAvatarImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Cartoon_Robot.svg/512px-Cartoon_Robot.svg.png',
-        botAvatarBackgroundColor: '#1abc9c',
-        //botAvatarInitials: 'Bot',
-        userAvatarImage: 'https://cdn3.iconfinder.com/data/icons/cardiovascular-1/120/heart_patient-512.png',
-        userAvatarBackgroundColor: '#1abc9c',
-        //userAvatarInitials: 'You'
-        avatarSize: 60,
+        //botAvatarImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Cartoon_Robot.svg/512px-Cartoon_Robot.svg.png',
+        //botAvatarBackgroundColor: '#1abc9c',
+        botAvatarInitials: 'Bot',
+        //userAvatarImage: 'https://cdn3.iconfinder.com/data/icons/cardiovascular-1/120/heart_patient-512.png',
+        //userAvatarBackgroundColor: '#1abc9c',
+        userAvatarInitials: 'You',
+        avatarSize: 40,
+        suggestedActionBackground: 'White'
     };
 
     const store = window.WebChat.createStore(
@@ -89,6 +117,8 @@ function initBotConversation() {
             return function(next) {
                 return function(action) {
                     if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
+
+                        // Use the following activity to proactively invoke a bot scenario
                         
                         store.dispatch({
                             type: 'DIRECT_LINE/POST_ACTIVITY',
@@ -106,6 +136,7 @@ function initBotConversation() {
                                 }
                             }
                         });
+                        
                     }
                     return next(action);
                 };
@@ -115,12 +146,13 @@ function initBotConversation() {
 
     const webchatOptions = {
         directLine: botConnection,
-        styleOptions,
-        store,
+        styleOptions: styleOptions,
+        store: store,
         userID: user.id,
         username: user.name,
-        locale: 'en'
+        locale: user.locale
     };
+
     startChat(user, webchatOptions);
 }
 
